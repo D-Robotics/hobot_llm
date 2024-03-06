@@ -37,7 +37,7 @@ sudo apt install -y tros-hobot-llm
 wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
 
 # 解压
-sudo tar -xf llm_model.tar.gz -C /opt/tros/lib/hobot_llm/
+sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 ```
 
 同时需要修改BPU保留内存大小为1.7GB，设置方法参考[TODO]()。

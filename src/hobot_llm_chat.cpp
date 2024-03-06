@@ -33,11 +33,13 @@ int main(int argc, char* argv[]) {
     return -1;
   }
   llm::BpuBloomModel model;
+  std::string tros_distro
+      = std::string(std::getenv("TROS_DISTRO")? std::getenv("TROS_DISTRO") : "");
   if (argc == 2) {
-    model.Read(argv[1], "/opt/tros/lib/hobot_llm/tokenization_bloom_py");
+    model.Read(argv[1], "/opt/tros/" + tros_distro + "/lib/hobot_llm/tokenization_bloom_py");
   } else {
-    model.Read("/opt/tros/lib/hobot_llm/llm_model",
-               "/opt/tros/lib/hobot_llm/tokenization_bloom_py");
+    model.Read("/opt/tros/" + tros_distro + "/lib/hobot_llm/llm_model",
+               "/opt/tros/" + tros_distro + "/lib/hobot_llm/tokenization_bloom_py");
   }
 
   int cache_size = model.GetCacheSize();
