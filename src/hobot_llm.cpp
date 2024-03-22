@@ -22,11 +22,13 @@
 namespace hobot_llm {
 
 HobotLLMNode::HobotLLMNode(std::string node_name) : Node(node_name) {
-  std::string model_dir = "/opt/tros/lib/hobot_llm/llm_model";
+  std::string tros_distro
+      = std::string(std::getenv("TROS_DISTRO")? std::getenv("TROS_DISTRO") : "");
+  std::string model_dir = "/opt/tros/" + tros_distro + "/lib/hobot_llm/llm_model";
   declare_parameter<std::string>("model_dir", model_dir);
   get_parameter<std::string>("model_dir", model_dir);
 
-  std::string tokenizer_dir = "/opt/tros/lib/hobot_llm/tokenization_bloom_py";
+  std::string tokenizer_dir = "/opt/tros/" + tros_distro + "/lib/hobot_llm/tokenization_bloom_py";
   declare_parameter<std::string>("tokenizer_dir", tokenizer_dir);
   get_parameter<std::string>("tokenizer_dir", tokenizer_dir);
 
