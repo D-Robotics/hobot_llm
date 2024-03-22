@@ -39,7 +39,7 @@ find_package(std_msgs REQUIRED)
 
 include_directories(
   include
-  ${CMAKE_SYSROOT}/usr/include/python3.8
+  ${CMAKE_SYSROOT}/usr/include/python3.10
 )
 
 link_directories(
@@ -48,10 +48,10 @@ link_directories(
 
 add_executable(hobot_llm src/main.cpp src/hobot_llm.cpp src/model/bpu_bloom_model.cpp src/tokenizer/tokenization_bloom.cpp)
 ament_target_dependencies(hobot_llm rclcpp std_msgs)
-target_link_libraries(hobot_llm easy_dnn dnn hlog -lpython3.8)
+target_link_libraries(hobot_llm easy_dnn dnn hlog -lpython3.10)
 
 add_executable(hobot_llm_chat src/hobot_llm_chat.cpp src/model/bpu_bloom_model.cpp src/tokenizer/tokenization_bloom.cpp)
-target_link_libraries(hobot_llm_chat easy_dnn dnn hlog -lpython3.8)
+target_link_libraries(hobot_llm_chat easy_dnn dnn hlog -lpython3.10)
 
 install(TARGETS
   hobot_llm
