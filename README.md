@@ -1,57 +1,57 @@
-# 1. 功能介绍
+English| [简体中文](./README_cn.md)
 
-**hobot_llm** 是地平线RDK平台集成的端侧**Large Language Model (LLM)** Node，用户可在端侧体验LLM。目前提供两种体验方式，一种直接终端输入文本聊天体验，一种订阅文本消息，然后将结果以文本方式发布出去。
+# 1. Introduction of Functions
 
-# 2. 物料清单
+**hobot_llm** is a Node of **Large Language Model (LLM)** integrated into the Horizon RDK platform, allowing users to experience LLM at the edge. Currently, there are two ways to experience it: direct text chatting at the terminal and subscribing to text messages, then publishing the results in text format.
 
-| 机器人名称        | 生产厂家 | 参考链接                                       |
-| :---------------- | -------- | ---------------------------------------------- |
-| RDK X3（4GB内存） | 多厂家   | [点击跳转](https://developer.horizon.cc/rdkx3) |
+# 2. Bill of Materials
 
-# 3. 使用方法
+| Robot Name        | Manufacturer | Reference Link                                  |
+| :---------------- | ----------- | ---------------------------------------------- |
+| RDK X3 (4GB RAM)  | Multiple Suppliers   | [Click here](https://developer.horizon.cc/rdkx3) |
 
-## 3.1. 准备工作
+# 3. How to Use
 
-在体验之前，需要具备以下基本条件：
+## 3.1. Preparation
 
-- 确认地平线RDK为4GB内存版本
-- 地平线RDK已烧录好地平线提供的Ubuntu 20.04系统镜像
-- 安装transformers，命令为 `pip3 install transformers -i https://pypi.tuna.tsinghua.edu.cn/simple`
-- 更新hobot-dnn，命令为 `sudo apt update; sudo apt install hobot-dnn`
+Before experiencing it, the following basic requirements need to be met:
 
-## 3.2. 安装功能包
+- Confirm that the Horizon RDK is the 4GB RAM version.
+- The Horizon RDK has been burned with the Ubuntu 20.04 system image provided by Horizon.
+- Install transformers, using the command `pip3 install transformers -i https://pypi.tuna.tsinghua.edu.cn/simple`.
+- Update hobot-dnn, using the command `sudo apt update; sudo apt install -y hobot-dnn`.
 
-启动RDK X3后，通过终端SSH或者VNC连接机器人，复制如下命令在RDK的系统上运行，完成相关Node的安装。
+## 3.2. Installing Function Packages
+
+After starting the RDK X3, connect to the robot through SSH or VNC terminal, copy and run the following commands on the RDK system to complete the installation of the corresponding Nodes.
 
 ```bash
 sudo apt update
 sudo apt install -y tros-hobot-llm
 ```
 
-## 3.3. 运行程序
+## 3.3. Running the Program
 
-运行程序前，需要下载模型文件并解压，命令如下：
+Before running the program, download the model files and unzip them using the following commands:
 
 ```bash
-# 下载模型文件
+# Download model files
 wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
 
-# 解压
+# Unzip
 sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 ```
 
-同时需要修改BPU保留内存大小为1.7GB，设置方法参考[TODO]()。
+At the same time, change the reserved memory size of BPU to 1.7GB. Refer to [TODO]() for the setting method.
 
-重启后调整CPU最高频率为1.5GHz，以及设置调度模式为`performance`，命令如下：
+After rebooting, adjust the CPU's highest frequency to 1.5GHz and set the scheduling mode to `performance`, using the following commands:
 
 ```bash
 sudo bash -c 'echo 1 > /sys/devices/system/cpu/cpufreq/boost'
 sudo bash -c 'echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor'
-```
+```Currently, two running programs are provided, **hobot_llm_chat** and **hobot_llm**. Among them, **hobot_llm_chat** provides a terminal interactive experience, allowing users to directly input text to experience the large model. The **hobot_llm** program subscribes to text messages of type `std_msgs/msg/String`, sends them to the large model for processing, and finally publishes the results in the form of `std_msgs/msg/String`. This program can be connected with other nodes, for example, to play the output text as speech.
 
-目前提供两个运行程序 **hobot_llm_chat** 和 **hobot_llm**，其中 **hobot_llm_chat** 提供终端交互体验，用户可直接输入文本体验大模型，**hobot_llm** 程序订阅 `std_msgs/msg/String` 类型文本消息，送给大模型处理，最后再将结果以 `std_msgs/msg/String` 类型发布出去，该程序可串联其他Node，例如将输出文本语音播放出去。
-
-### 3.3.1. 运行 hobot_llm_chat
+### 3.3.1. Running hobot_llm_chat
 
 ```bash
 source /opt/tros/setup.bash
@@ -59,11 +59,11 @@ source /opt/tros/setup.bash
 ros2 run hobot_llm hobot_llm_chat
 ```
 
-程序启动后，可直接在当前终端和机器人聊天。
+After the program is launched, you can chat directly with the robot in the current terminal.
 
-### 3.3.2. 运行 hobot_llm
+### 3.3.2. Running hobot_llm
 
-1. 启动 hobot_llm
+1. Start hobot_llm
 
     ```bash
     source /opt/tros/setup.bash
@@ -71,7 +71,7 @@ ros2 run hobot_llm hobot_llm_chat
     ros2 run hobot_llm hobot_llm
     ```
 
-2. 新开一个终端订阅输出结果topic
+2. Open a new terminal to subscribe to the output result topic
 
     ```bash
     source /opt/tros/setup.bash
@@ -79,42 +79,40 @@ ros2 run hobot_llm hobot_llm_chat
     ros2 topic echo /text_result
     ```
 
-3. 新开一个终端发布消息
+3. Open a new terminal to publish a message
 
     ```bash
     source /opt/tros/setup.bash
 
-    ros2 topic pub --once /text_query std_msgs/msg/String "{data: ""中国的首都是哪里""}"
+    ros2 topic pub --once /text_query std_msgs/msg/String "{data: ""What is the capital of China?""}"
     ```
 
-# 4. 接口说明
+# 4. Interface Description
 
-**hobot_llm** 程序接口说明如下：
+The interface of **hobot_llm** program is as follows:
 
-## 4.1. 话题
+## 4.1. Topics
 
-| 名称        | 消息类型            | 说明              |
-| ----------- | ------------------- | ----------------- |
-| /text_query | std_msgs/msg/String | 默认订阅topic     |
-| /text_result  | std_msgs/msg/String | 默认结果发布topic |
+| Name         | Message Type         | Description               |
+| ------------ | -------------------- | ------------------------- |
+| /text_query  | std_msgs/msg/String  | Default subscription topic |
+| /text_result | std_msgs/msg/String  | Default result publication topic |## 4.2. Parameters
 
-## 4.2. 参数
+| Parameter   | Type         | Description          | Required | Supported Configuration | Default Value  |
+| ----------- | ------------ | -------------------- | -------- | ------------------------ | -------------- |
+| topic_sub   | std::string  | Subscription topic name | No      | Configured according to the actual deployment environment | /text_query  |
+| topic_pub   | std::string  | Publish result topic name | No     | Configured according to the actual deployment environment | /text_result |
 
-| 参数名    | 类型        | 解释              | 是否必须 | 支持的配置           | 默认值       |
-| --------- | ----------- | ----------------- | -------- | -------------------- | ------------ |
-| topic_sub | std::string | 订阅文本topic名称 | 否       | 根据实际部署环境配置 | /text_query  |
-| topic_pub | std::string | 发布结果topic名称 | 否       | 根据实际部署环境配置 | /text_result |
+# 5. Frequently Asked Questions
 
-# 5. 常见问题
+1. Model loading failure
 
-1. 模型加载失败
+   Confirm that the development board has 4GB of memory, and modify the reserved memory size of BPU to 1.7GB.
 
-    确认开发板内存为4GB，同时修改BPU保留内存大小为1.7GB。
+2. Output result is garbled
 
-2. 输出结果乱码
+   Confirm that you have used the command `sudo apt update; sudo apt install hobot-dnn` to update hobot-dnn.
 
-   确认已使用命令`sudo apt update; sudo apt install hobot-dnn`更新 hobot-dnn。
+3. How to manually modify the BPU reserved memory to 1.7GB?
 
-3. 如何手动修改BPU保留内存为1.7GB？
-
-   修改方法参考[在设备树中设置ion_cam size](https://developer.horizon.ai/api/v1/fileData/documents_rdk/system_software_development/driver_develop_guide/18-Memory_Managment_zh_CN.html#ion-cam-size)，修改 alloc-ranges 和 size 属性中的 0x2a000000 为 0x6a400000。
+   Refer to the modification method in [Setting ion_cam size in device tree](https://developer.horizon.ai/api/v1/fileData/documents_rdk/system_software_development/driver_develop_guide/18-Memory_Managment_zh_CN.html#ion-cam-size), and change the values from 0x2a000000 to 0x6a400000 in the alloc-ranges and size attributes.
