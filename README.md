@@ -49,7 +49,9 @@ After rebooting, adjust the CPU's highest frequency to 1.5GHz and set the schedu
 ```bash
 sudo bash -c 'echo 1 > /sys/devices/system/cpu/cpufreq/boost'
 sudo bash -c 'echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor'
-```Currently, two running programs are provided, **hobot_llm_chat** and **hobot_llm**. Among them, **hobot_llm_chat** provides a terminal interactive experience, allowing users to directly input text to experience the large model. The **hobot_llm** program subscribes to text messages of type `std_msgs/msg/String`, sends them to the large model for processing, and finally publishes the results in the form of `std_msgs/msg/String`. This program can be connected with other nodes, for example, to play the output text as speech.
+```
+
+Currently, two running programs are provided, **hobot_llm_chat** and **hobot_llm**. Among them, **hobot_llm_chat** provides a terminal interactive experience, allowing users to directly input text to experience the large model. The **hobot_llm** program subscribes to text messages of type `std_msgs/msg/String`, sends them to the large model for processing, and finally publishes the results in the form of `std_msgs/msg/String`. This program can be connected with other nodes, for example, to play the output text as speech.
 
 ### 3.3.1. Running hobot_llm_chat
 
