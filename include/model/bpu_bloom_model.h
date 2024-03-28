@@ -20,16 +20,13 @@
 #include <unordered_map>
 #include <vector>
 
-#include "easy_dnn/data_structure.h"
-#include "easy_dnn/model.h"
-#include "easy_dnn/model_manager.h"
-#include "easy_dnn/task_manager.h"
+#include "dnn_node/dnn_node.h"
+
 #include "tokenizer/tokenization_bloom.h"
 
-using hobot::easy_dnn::DNNTensor;
-using hobot::easy_dnn::Model;
-using hobot::easy_dnn::ModelManager;
-using hobot::easy_dnn::TaskManager;
+using hobot::dnn_node::DNNTensor;
+using hobot::dnn_node::Model;
+using hobot::dnn_node::ModelInferTask;
 
 namespace llm {
 
@@ -38,6 +35,7 @@ class BpuBloomModel {
   BpuBloomModel() = default;
   ~BpuBloomModel();
   void Read(const std::string& model_dir, const std::string& tokenizer_dir);
+  int LoadModels(std::vector<Model *> &models, const std::string &model_file);
   void Reset();
   static void AllocMemory(const std::shared_ptr<Model>& model,
                           std::vector<std::shared_ptr<DNNTensor>>* input,
@@ -73,6 +71,7 @@ class BpuBloomModel {
 
   // models
   std::unordered_map<std::string, std::shared_ptr<Model>> submodels_;
+  hbPackedDNNHandle_t packed_dnn_handle_;
 
   // input/output tensors
   std::unordered_map<std::string, std::vector<std::shared_ptr<DNNTensor>>>

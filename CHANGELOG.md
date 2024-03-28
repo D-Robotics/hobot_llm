@@ -1,5 +1,9 @@
 # Changelog for package hobot_llm
 
+tros_2.1.0 (2024-03-28)
+------------------
+1. 适配重构dnn_node。
+
 tros_2.0.2 (2024-3-6)
 ------------------
 1. 配置文件路径由`/opt/tros/lib`变更为`/opt/tros/${TROS_DISTRO}/lib`。

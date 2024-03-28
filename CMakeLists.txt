@@ -35,6 +35,7 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(dnn_node REQUIRED)
 find_package(std_msgs REQUIRED)
 
 include_directories(
@@ -47,11 +48,12 @@ link_directories(
 )
 
 add_executable(hobot_llm src/main.cpp src/hobot_llm.cpp src/model/bpu_bloom_model.cpp src/tokenizer/tokenization_bloom.cpp)
-ament_target_dependencies(hobot_llm rclcpp std_msgs)
-target_link_libraries(hobot_llm easy_dnn dnn hlog -lpython3.10)
+target_link_libraries(hobot_llm dnn -lpython3.10)
+ament_target_dependencies(hobot_llm rclcpp dnn_node std_msgs)
 
 add_executable(hobot_llm_chat src/hobot_llm_chat.cpp src/model/bpu_bloom_model.cpp src/tokenizer/tokenization_bloom.cpp)
-target_link_libraries(hobot_llm_chat easy_dnn dnn hlog -lpython3.10)
+target_link_libraries(hobot_llm_chat dnn -lpython3.10)
+ament_target_dependencies(hobot_llm_chat rclcpp dnn_node std_msgs)
 
 install(TARGETS
   hobot_llm
