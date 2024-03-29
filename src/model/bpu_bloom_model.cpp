@@ -30,7 +30,9 @@ void BpuBloomModel::GetInputOutputInfo(
     const std::vector<std::shared_ptr<DNNTensor>> &output) {
   std::string name;
   for (size_t i = 0; i < input.size(); ++i) {
-    model->GetInputName(name, i);
+    const char *input_name{nullptr};
+    hbDNNGetInputName(&input_name, model->GetDNNHandle(), i);
+    name = input_name;
     auto &shapes = input[i]->properties.validShape.dimensionSize;
     int32_t &dim = input[i]->properties.validShape.numDimensions;
     std::string layout = (input[i]->properties.tensorLayout ==
@@ -62,20 +64,24 @@ void BpuBloomModel::Read(const std::string &model_dir,
                          const std::string &tokenizer_dir) {
   for (auto &name : submodel_names_) {
     std::string submodel_path = model_dir + "/" + name + ".bin";
-    // 0. Init managers
-    ModelManager *model_manager = ModelManager::GetInstance();
 
     // 1. Load models
     std::vector<Model *> models;
-    int ret_code = model_manager->Load(models, submodel_path);
+    int ret_code = LoadModels(models, submodel_path);
     if (ret_code != 0) {
       throw std::runtime_error("Failed to load file: " + submodel_path);
     }
     std::vector<std::shared_ptr<DNNTensor>> input, output;
-    std::shared_ptr<Model> submodel(
-        model_manager->GetModel([&name](Model *model) {
-          return model->GetName().find(name) != std::string::npos;
-        }));
+    
+    Model *target_model;
+    for (auto *model : models) {
+      if (name == model->GetName()) {
+        // submodel = std::move(model.get());
+        target_model = model;
+      }
+    }
+    std::shared_ptr<Model> submodel = std::make_shared<Model>(*target_model);
+
     submodels_[name] = std::move(submodel);
     submodel_input_tensors_[name] = std::move(input);
     submodel_output_tensors_[name] = std::move(output);
@@ -140,6 +146,40 @@ void BpuBloomModel::Read(const std::string &model_dir,
   assert(true == ret);
 }
 
+int BpuBloomModel::LoadModels(std::vector<Model *> &models,
+                               const std::string &model_file) {
+  const char *file{model_file.c_str()};
+  int ret = 0;
+  //第一步加载模型
+  ret = hbDNNInitializeFromFiles(&packed_dnn_handle_, static_cast<const char **>(&file), 1);
+  if (ret != 0) {
+    return ret;
+  }
+
+  // 第二步获取模型名称
+  const char **model_names;
+  int32_t model_count = 0;
+  ret = hbDNNGetModelNameList(&model_names, &model_count, packed_dnn_handle_);
+  if (ret != 0) {
+    return ret;
+  }
+
+  // 第三步获取dnn_handle
+  {
+    for (int32_t i = 0; i < model_count; i++) {
+      hbDNNHandle_t dnn_handle{nullptr};
+      ret = hbDNNGetModelHandle(&dnn_handle, packed_dnn_handle_, model_names[i]);
+      if (ret != 0) {
+        return ret;
+      }
+      Model* model = new Model(dnn_handle, model_names[i]);
+      models.push_back(model);
+    }
+  }
+
+  return ret;
+}
+
 void BpuBloomModel::AllocMemory(
     const std::shared_ptr<Model> &model,
     std::vector<std::shared_ptr<DNNTensor>> *inputs,
@@ -200,7 +240,6 @@ void BpuBloomModel::ConvertId2Token(int token_id, std::string &token) {
 
 void BpuBloomModel::Forward(int cur_token_id,
                             std::vector<float> *next_token_prob) {
-  TaskManager *task_manager = TaskManager::GetInstance();
 
   // 1. Forward
   for (int i = 0; i < submodel_names_.size(); ++i) {
@@ -269,13 +308,14 @@ void BpuBloomModel::Forward(int cur_token_id,
     for (auto &tensor : submodel_input_tensors_[name]) {
       hbSysFlushMem(&(tensor->sysMem[0]), HB_SYS_MEM_CACHE_CLEAN);
     }
-    auto infer_task = task_manager->GetModelInferTask(5000);
+    // auto infer_task = task_manager->GetModelInferTask(5000);
+    auto infer_task = std::make_shared<ModelInferTask>();
     infer_task->SetModel(submodels_[name].get());
     infer_task->SetInputTensors(submodel_input_tensors_[name]);
-    infer_task->SetOutputTensors(submodel_output_tensors_[name]);
+    // infer_task->SetOutputTensors(submodel_output_tensors_[name]);
     infer_task->RunInfer();
     infer_task->WaitInferDone(5000);
-    infer_task.reset();
+    infer_task->GetOutputTensors(submodel_output_tensors_[name]);
     for (auto &tensor : submodel_output_tensors_[name]) {
       hbSysFlushMem(&(tensor->sysMem[0]), HB_SYS_MEM_CACHE_INVALIDATE);
     }
@@ -299,6 +339,7 @@ void BpuBloomModel::Forward(int cur_token_id,
         }
       }
     }
+    infer_task.reset();
   }
 
   // 2. Extract final outout_prob, [1, 1, vocab_size, 1]
@@ -319,6 +360,7 @@ BpuBloomModel::~BpuBloomModel() {
       hbSysFreeMem(tensor->sysMem);
     }
   }
+  hbDNNRelease(packed_dnn_handle_);
 }
 
 }  // namespace llm
