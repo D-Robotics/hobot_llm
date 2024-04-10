@@ -25,20 +25,38 @@ Before experiencing it, the following basic requirements need to be met:
 
 After starting the RDK X3, connect to the robot through SSH or VNC terminal, copy and run the following commands on the RDK system to complete the installation of the corresponding Nodes.
 
+tros foxy:
 ```bash
 sudo apt update
 sudo apt install -y tros-hobot-llm
+```
+
+tros humble:
+```bash
+sudo apt update
+sudo apt install -y tros-humble-hobot-llm
 ```
 
 ## 3.3. Running the Program
 
 Before running the program, download the model files and unzip them using the following commands:
 
+tros foxy:
 ```bash
 # Download model files
 wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
 
 # Unzip
+sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
+```
+
+tros humble:
+```bash
+# Download model files
+wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
+
+# Unzip
+source /opt/tros/humble/setup.bash ##export TROS_DISTRO=humble
 sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 ```
 
@@ -55,8 +73,16 @@ Currently, two running programs are provided, **hobot_llm_chat** and **hobot_llm
 
 ### 3.3.1. Running hobot_llm_chat
 
+tros foxy:
 ```bash
 source /opt/tros/setup.bash
+
+ros2 run hobot_llm hobot_llm_chat
+```
+
+tros humble:
+```bash
+source /opt/tros/humble/setup.bash
 
 ros2 run hobot_llm hobot_llm_chat
 ```
@@ -67,24 +93,49 @@ After the program is launched, you can chat directly with the robot in the curre
 
 1. Start hobot_llm
 
+    tros foxy:
     ```bash
     source /opt/tros/setup.bash
 
     ros2 run hobot_llm hobot_llm
     ```
 
+    tros humble:
+    ```bash
+    source /opt/tros/humble/setup.bash
+
+    ros2 run hobot_llm hobot_llm
+    ```
+
 2. Open a new terminal to subscribe to the output result topic
 
+
+    tros foxy:
     ```bash
     source /opt/tros/setup.bash
 
     ros2 topic echo /text_result
     ```
 
+    tros humble:
+    ```bash
+    source /opt/tros/humble/setup.bash
+
+    ros2 topic echo /text_result
+    ```
+
 3. Open a new terminal to publish a message
 
+    tros foxy:
     ```bash
     source /opt/tros/setup.bash
+
+    ros2 topic pub --once /text_query std_msgs/msg/String "{data: ""What is the capital of China?""}"
+    ```
+
+    tros humble:
+    ```bash
+    source /opt/tros/humble/setup.bash
 
     ros2 topic pub --once /text_query std_msgs/msg/String "{data: ""What is the capital of China?""}"
     ```

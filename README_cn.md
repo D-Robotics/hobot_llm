@@ -25,20 +25,38 @@
 
 启动RDK X3后，通过终端SSH或者VNC连接机器人，复制如下命令在RDK的系统上运行，完成相关Node的安装。
 
+tros foxy 版本
 ```bash
 sudo apt update
 sudo apt install -y tros-hobot-llm
+```
+
+tros humble 版本
+```bash
+sudo apt update
+sudo apt install -y tros-humble-hobot-llm
 ```
 
 ## 3.3. 运行程序
 
 运行程序前，需要下载模型文件并解压，命令如下：
 
+tros foxy 版本
+```bash
+# 下载模型文件
+wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
+
+# 解压,
+sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
+```
+
+tros humble 版本
 ```bash
 # 下载模型文件
 wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
 
 # 解压
+source /opt/tros/humble/setup.bash ##export TROS_DISTRO=humble
 sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 ```
 
@@ -55,8 +73,16 @@ sudo bash -c 'echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling
 
 ### 3.3.1. 运行 hobot_llm_chat
 
+tros foxy 版本
 ```bash
 source /opt/tros/setup.bash
+
+ros2 run hobot_llm hobot_llm_chat
+```
+
+tros humble 版本
+```bash
+source /opt/tros/humble/setup.bash
 
 ros2 run hobot_llm hobot_llm_chat
 ```
@@ -67,27 +93,53 @@ ros2 run hobot_llm hobot_llm_chat
 
 1. 启动 hobot_llm
 
+    tros foxy 版本
     ```bash
     source /opt/tros/setup.bash
 
     ros2 run hobot_llm hobot_llm
     ```
 
+    tros humble 版本
+    ```bash
+    source /opt/tros/humble/setup.bash
+
+    ros2 run hobot_llm hobot_llm
+    ```
+
+
 2. 新开一个终端订阅输出结果topic
 
+    tros foxy 版本
     ```bash
     source /opt/tros/setup.bash
 
     ros2 topic echo /text_result
     ```
 
+    tros humble 版本
+    ```bash
+    source /opt/tros/humble/setup.bash
+
+    ros2 topic echo /text_result
+    ```
+
 3. 新开一个终端发布消息
 
+    tros foxy 版本
     ```bash
     source /opt/tros/setup.bash
 
     ros2 topic pub --once /text_query std_msgs/msg/String "{data: ""中国的首都是哪里""}"
     ```
+    tros humble 版本
+    ```bash
+    source /opt/tros/humble/setup.bash
+
+    ros2 topic pub --once /text_query std_msgs/msg/String "{data: ""中国的首都是哪里""}"
+    ```
+
+    
 
 # 4. 接口说明
 
