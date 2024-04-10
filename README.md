@@ -34,7 +34,6 @@ sudo apt install -y tros-hobot-llm
 tros humble:
 ```bash
 sudo apt update
-sudo apt install -y ros-humble-ros-base
 sudo apt install -y tros-humble-hobot-llm
 ```
 
