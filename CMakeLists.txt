@@ -45,6 +45,7 @@ include_directories(
 
 link_directories(
   ${CMAKE_SYSROOT}/usr/lib/hbbpu/
+  ${CMAKE_SYSROOT}/usr/hobot/lib/
 )
 
 add_executable(hobot_llm src/main.cpp src/hobot_llm.cpp src/model/bpu_bloom_model.cpp src/tokenizer/tokenization_bloom.cpp)
