@@ -2,13 +2,13 @@
 
 # 1. 功能介绍
 
-**hobot_llm** 是地平线RDK平台集成的端侧**Large Language Model (LLM)** Node，用户可在端侧体验LLM。目前提供两种体验方式，一种直接终端输入文本聊天体验，一种订阅文本消息，然后将结果以文本方式发布出去。
+**hobot_llm** 是RDK平台集成的端侧**Large Language Model (LLM)** Node，用户可在端侧体验LLM。目前提供两种体验方式，一种直接终端输入文本聊天体验，一种订阅文本消息，然后将结果以文本方式发布出去。
 
 # 2. 物料清单
 
 | 机器人名称        | 生产厂家 | 参考链接                                       |
 | :---------------- | -------- | ---------------------------------------------- |
-| RDK X3（4GB内存） | 多厂家   | [点击跳转](https://developer.horizon.cc/rdkx3) |
+| RDK X3（4GB内存） | 多厂家   | [点击跳转](https://developer.d-robotics.cc/rdkx3) |
 
 # 3. 使用方法
 
@@ -16,8 +16,8 @@
 
 在体验之前，需要具备以下基本条件：
 
-- 确认地平线RDK为4GB内存版本
-- 地平线RDK已烧录好地平线提供的Ubuntu 20.04系统镜像
+- 确认RDK为4GB内存版本
+- RDK已烧录好Ubuntu 20.04系统镜像
 - 安装transformers，命令为 `pip3 install transformers -i https://pypi.tuna.tsinghua.edu.cn/simple`
 - 更新hobot-dnn，命令为 `sudo apt update; sudo apt install hobot-dnn`
 

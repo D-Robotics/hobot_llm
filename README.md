@@ -2,13 +2,13 @@ English| [简体中文](./README_cn.md)
 
 # 1. Introduction of Functions
 
-**hobot_llm** is a Node of **Large Language Model (LLM)** integrated into the Horizon RDK platform, allowing users to experience LLM at the edge. Currently, there are two ways to experience it: direct text chatting at the terminal and subscribing to text messages, then publishing the results in text format.
+**hobot_llm** is a Node of **Large Language Model (LLM)** integrated into the RDK platform, allowing users to experience LLM at the edge. Currently, there are two ways to experience it: direct text chatting at the terminal and subscribing to text messages, then publishing the results in text format.
 
 # 2. Bill of Materials
 
 | Robot Name        | Manufacturer | Reference Link                                  |
 | :---------------- | ----------- | ---------------------------------------------- |
-| RDK X3 (4GB RAM)  | Multiple Suppliers   | [Click here](https://developer.horizon.cc/rdkx3) |
+| RDK X3 (4GB RAM)  | Multiple Suppliers   | [Click here](https://developer.d-robotics.cc/rdkx3) |
 
 # 3. How to Use
 
@@ -16,8 +16,8 @@ English| [简体中文](./README_cn.md)
 
 Before experiencing it, the following basic requirements need to be met:
 
-- Confirm that the Horizon RDK is the 4GB RAM version.
-- The Horizon RDK has been burned with the Ubuntu 20.04 system image provided by Horizon.
+- Confirm that the RDK is the 4GB RAM version.
+- The RDK has been burned with the Ubuntu 20.04.
 - Install transformers, using the command `pip3 install transformers -i https://pypi.tuna.tsinghua.edu.cn/simple`.
 - Update hobot-dnn, using the command `sudo apt update; sudo apt install -y hobot-dnn`.
 
@@ -44,7 +44,7 @@ Before running the program, download the model files and unzip them using the fo
 tros foxy:
 ```bash
 # Download model files
-wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
+wget http://archive.d-robotics.cc/tros/llm-model/llm_model.tar.gz
 
 # Unzip
 sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
@@ -53,7 +53,7 @@ sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 tros humble:
 ```bash
 # Download model files
-wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
+wget http://archive.d-robotics.cc/tros/llm-model/llm_model.tar.gz
 
 # Unzip
 source /opt/tros/humble/setup.bash ##export TROS_DISTRO=humble

@@ -1,4 +1,4 @@
-// Copyright (c) 2023, Horizon Robotics.
+// Copyright (c) 2024, D-Robotics.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
   int cache_size = model.GetCacheSize();
   int vocab_size = model.GetVocabSize();
   std::cout << LLM_RED(
-                   "这是一个地平线RDK平台大模型聊天程序，"
+                   "这是一个RDK平台大模型聊天程序，"
                    "请输入你的问题并按下回车，如需重新开始请输入reset，"
                    "如需退出请输入exit")
             << std::endl;
