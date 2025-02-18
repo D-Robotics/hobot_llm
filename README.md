@@ -44,7 +44,7 @@ Before running the program, download the model files and unzip them using the fo
 tros foxy:
 ```bash
 # Download model files
-wget http://archive.d-robotics.cc/tros/llm-model/llm_model.tar.gz
+wget http://archive.d-robotics.cc/llm-model/llm_model.tar.gz
 
 # Unzip
 sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
@@ -53,7 +53,7 @@ sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 tros humble:
 ```bash
 # Download model files
-wget http://archive.d-robotics.cc/tros/llm-model/llm_model.tar.gz
+wget http://archive.d-robotics.cc/llm-model/llm_model.tar.gz
 
 # Unzip
 source /opt/tros/humble/setup.bash ##export TROS_DISTRO=humble

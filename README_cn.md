@@ -44,7 +44,7 @@ sudo apt install -y tros-humble-hobot-llm
 tros foxy 版本
 ```bash
 # 下载模型文件
-wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
+wget http://archive.d-robotics.cc/llm-model/llm_model.tar.gz
 
 # 解压,
 sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
@@ -53,7 +53,7 @@ sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 tros humble 版本
 ```bash
 # 下载模型文件
-wget http://sunrise.horizon.cc/llm-model/llm_model.tar.gz
+wget http://archive.d-robotics.cc/llm-model/llm_model.tar.gz
 
 # 解压
 source /opt/tros/humble/setup.bash ##export TROS_DISTRO=humble
