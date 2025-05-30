@@ -17,9 +17,9 @@ English| [简体中文](./README_cn.md)
 Before experiencing it, the following basic requirements need to be met:
 
 - Confirm that the RDK is the 4GB RAM version.
-- The RDK has been burned with the Ubuntu 20.04.
+- The RDK has been burned with the Ubuntu 20.04/22.04.
 - Install transformers, using the command `pip3 install transformers -i https://pypi.tuna.tsinghua.edu.cn/simple`.
-- Update hobot-dnn, using the command `sudo apt update; sudo apt install -y hobot-dnn`.
+- Update hobot-dnn, using the command `sudo apt update; sudo apt install -y tros-humble-dnn-node`.
 
 ## 3.2. Installing Function Packages
 
@@ -60,7 +60,7 @@ source /opt/tros/humble/setup.bash ##export TROS_DISTRO=humble
 sudo tar -xf llm_model.tar.gz -C /opt/tros/${TROS_DISTRO}/lib/hobot_llm/
 ```
 
-At the same time, change the reserved memory size of BPU to 1.7GB. Refer to [TODO]() for the setting method.
+At the same time, change the reserved memory size of BPU to 1.7GB. Refer to [srpi-config](https://developer.d-robotics.cc/rdk_doc/System_configuration/srpi-config#performance-options) for the setting method.
 
 After rebooting, adjust the CPU's highest frequency to 1.5GHz and set the scheduling mode to `performance`, using the following commands:
 
